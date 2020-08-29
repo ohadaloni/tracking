@@ -29,10 +29,10 @@ class TrackingUtils extends Mcontroller {
 	/*------------------------------*/
 	private function registerFilters() {
 		$this->Mview->register_modifier("numberFormat", array("Mutils", "numberFormat",));
-		$this->Mview->register_modifier("weekday", array("TrackingUtils", "weekday",));
-		$this->Mview->register_modifier("terse", array("TrackingUtils", "terse",));
+		$this->Mview->register_modifier("terse", array("Mutils", "terse",));
+		$this->Mview->register_modifier("makeLinks", array("Mutils", "makeLinks",));
 		$this->Mview->register_modifier("timeUnit", array("TrackingUtils", "timeUnit",));
-		$this->Mview->register_modifier("makeLinks", array("TrackingUtils", "makeLinks",));
+		$this->Mview->register_modifier("weekday", array("TrackingUtils", "weekday",));
 		$this->Mview->register_modifier("monthlname", array("Mdate", "monthlname",));
 	}
 	/*------------------------------------------------------------*/
@@ -48,54 +48,6 @@ class TrackingUtils extends Mcontroller {
 		return($timeUnits[$timeSlot]);
 
 	}
-	/*------------------------------------------------------------*/
-	public static function terse($str, $numWords = 7) {
-		$cnt = strlen($str);
-		$words = explode(" ", $str);
-		$cnt = count($words);
-		if ( $cnt <= $numWords )
-			return($str);
-		$words = array_slice($words, 0, $numWords);
-		$str = implode(" ", $words)." ...($cnt)";
-		return($str);
-	}
-	/*------------------------------------------------------------*/
-        // from:
-        // http://krasimirtsonev.com/blog/article/php--find-links-in-a-string-and-replace-them-with-actual-html-link-tags
-        //
-        // if
-        //        {$row.story|nl2br|makeLinks}
-        // makeLinks sticks a br in the middle if the link title
-        // so try
-        //        {$row.story|makeLinks|nl2br}
-        public static function makeLinks($str) {
-                $reg_exUrl = "/(http|https|ftp|ftps)\:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,3}(\/\S*)?/";
-                $urls = array();
-                $urlsToReplace = array();
-                if(preg_match_all($reg_exUrl, $str, $urls)) {
-                        $numOfMatches = count($urls[0]);
-                        $numOfUrlsToReplace = 0;
-                        for($i=0; $i<$numOfMatches; $i++) {
-                                $alreadyAdded = false;
-                                $numOfUrlsToReplace = count($urlsToReplace);
-                                for($j=0; $j<$numOfUrlsToReplace; $j++) {
-                                        if($urlsToReplace[$j] == $urls[0][$i]) {
-                                                $alreadyAdded = true;
-                                        }
-                                }
-                                if(!$alreadyAdded) {
-                                        array_push($urlsToReplace, $urls[0][$i]);
-                                }
-                        }
-                        $numOfUrlsToReplace = count($urlsToReplace);
-                        for($i=0; $i<$numOfUrlsToReplace; $i++) {
-                                $str = str_replace($urlsToReplace[$i], "<a target=\"_blank\" href=\"".$urlsToReplace[$i]."\">".$urlsToReplace[$i]."</a> ", $str);
-                        }
-                        return $str;
-                } else {
-                        return $str;
-                }
-        }
 	/*------------------------------------------------------------*/
 	public static function sendPixel() {
 		header("Content-type: image/gif");

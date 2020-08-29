@@ -95,9 +95,11 @@ class Pixel extends Tracking {
 			'minute' => date("i"),
 		);
 		$qItem = array_merge($more, $a);
-		$this->Mmemcache->msgQadd("trackingPixel", $qItem);
+		// Sat Aug 29 11:54:44 IDT 2020
+		// bot hits
+		/*	$this->Mmemcache->msgQadd("trackingPixel", $qItem);	*/
 		$json = json_encode($qItem);
-		error_log("Queueing: $json");
+		error_log("(not) Queueing: $json");
 	}
 	/*------------------------------------------------------------*/
 	private function send() {
