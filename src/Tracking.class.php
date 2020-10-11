@@ -29,9 +29,6 @@ class Tracking extends Mcontroller {
 		$logFile = "$logsDir/$logFileName";
 		$this->logger = new Logger($logFile);
 		$this->trackingUtils = new TrackingUtils;
-		$sql = "select * from countries order by name";
-		$countries = $this->Mmodel->getRows($sql, 24*3600);
-		$this->Mview->assign("countries", $countries);
 	}
 	/*------------------------------------------------------------*/
 	/*------------------------------------------------------------*/
